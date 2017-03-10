@@ -1,0 +1,2 @@
+apply from: '../ext.gradle'
+include ':mybatisx'

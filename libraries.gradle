@@ -1,0 +1,180 @@
+ext {
+  versions = [
+    apache_common_lang3:    '3.5',
+    apache_common_compress: '1.13',
+    apache_common_math3:    '3.6.1',
+    apache_common_collect4: '4.1',
+    dubbo:                  '2.8.4',
+    mybatis:                '3.2.4',
+    jacoco:                 '0.7.6.201602180812',
+    aspectj:                '1.8.9',
+    groovy:                 '2.4.6',
+    hibernate:              '5.1.0.Final',
+    httpcomponents:         '4.5.2',
+    jetty:                  '9.3.9.M0',
+    jstl:                   '1.2',
+    mongo:                  '3.4.1',
+    morphia:                '1.2.1',
+    poi:                    '3.14',
+    slf4j:                  '1.7.22',
+    curator:                '3.2.1',
+    jackson:                '2.8.6',
+    
+    jstl:                   '1.2',
+    servlet:                '3.1.0',
+    validation:             '1.1.0.Final',
+    el:                     '3.0.0',
+    rs:                     '2.0.1',
+    websocket:              '1.1',
+    mail:                   '1.5.6',
+    interceptor:            '3.1',
+    jms:                    '2.0.1',
+
+
+    spring:                 '4.3.5.RELEASE',
+    spring_security:        '4.0.4.RELEASE',
+    spring_boot:            '1.4.0.RELEASE',
+    spring_cloud:           'Camden.RELEASE',
+
+    mybatisx:               '1.0.8.RELEASE'
+  ]
+
+
+  libraries = [
+    
+    apache_common : [
+      "org.apache.commons:commons-lang3:${versions.apache_common_lang3}",
+      "org.apache.commons:commons-math3:${versions.apache_common_math3}",
+      "org.apache.commons:commons-compress:${versions.apache_common_compress}",
+      "org.apache.commons:commons-collections4:${versions.apache_common_collect4}",
+      "commons-io:commons-io:2.5",
+      "commons-net:commons-net:3.5",
+      "commons-logging:commons-logging:1.2"
+    ],
+    
+    slf4j : [
+      "org.slf4j:slf4j-api:${versions.slf4j}"
+    ],
+
+    javax_api : [
+      "javax.servlet:javax.servlet-api:${versions.servlet}",
+      "javax.servlet:jstl:${versions.jstl}",
+      "javax.validation:validation-api:${versions.validation}",
+      "javax.el:javax.el-api:${versions.el}",
+      "javax.ws.rs:javax.ws.rs-api:${versions.rs}",
+      "javax.websocket:javax.websocket-api:${versions.websocket}",
+      "javax.mail:javax.mail-api:${versions.mail}",
+      "javax.interceptor:javax.interceptor-api:${versions.interceptor}",
+      "javax.jms:javax.jms-api:${versions.jms}"
+    ],
+
+    javax_impl : [
+      "com.fasterxml.jackson.jaxrs:jackson-jaxrs-json-provider:2.8.6"
+    ],
+
+    httpcomponents : [
+      "org.apache.httpcomponents:httpclient:${versions.httpcomponents}",
+      "org.apache.httpcomponents:httpmime:${versions.httpcomponents}",
+      "org.apache.httpcomponents:fluent-hc:${versions.httpcomponents}",
+      "org.apache.httpcomponents:httpclient-cache:${versions.httpcomponents}"
+    ],
+    
+    spring : [
+      "org.springframework:spring-context:${versions.spring}",
+      "org.springframework:spring-test:${versions.spring}",
+      "org.springframework:spring-core:${versions.spring}",
+      "org.springframework:spring-beans:${versions.spring}",
+      "org.springframework:spring-web:${versions.spring}",
+      "org.springframework:spring-webmvc:${versions.spring}",
+      "org.springframework:spring-aop:${versions.spring}",
+      "org.springframework:spring-tx:${versions.spring}",
+      "org.springframework:spring-context-support:${versions.spring}",
+      "org.springframework:spring-expression:${versions.spring}",
+      "org.springframework:spring-jms:${versions.spring}",
+      "org.springframework:spring-aspects:${versions.spring}",
+      "org.springframework:spring-oxm:${versions.spring}",
+      "org.springframework:spring-messaging:${versions.spring}",
+      "org.springframework:spring-websocket:${versions.spring}"
+    ],
+
+    dubbo : [
+      "com.alibaba:dubbo:${versions.dubbo}"
+    ],
+
+    mybatis : [
+      "org.mybatis:mybatis:${versions.mybatis}",
+      'org.mybatis:mybatis-ehcache:1.0.0',
+      'org.mybatis:mybatis-spring:1.3.1',
+      'org.mybatis.generator:mybatis-generator-core:1.3.5'
+    ],
+
+    mongo : [
+      "org.mongodb:bson:${versions.mongo}",
+      "org.mongodb:mongodb-driver-core:${versions.mongo}",
+      "org.mongodb:mongo-java-driver:${versions.mongo}"
+    ],
+
+    morphia : [
+      'org.mongodb.morphia:morphia-util:0.111',
+      'org.mongodb.morphia:morphia:1.3.1',
+      'org.mongodb.morphia:morphia-validation:1.3.1',
+      'org.mongodb.morphia:morphia-entityscanner-plug:1.3.1',
+      'org.mongodb.morphia:morphia-guice-plug:1.3.1',
+      'org.mongodb.morphia:morphia-no-proxy-deps-tests:1.3.1'
+    ],
+
+    logback : [
+      "ch.qos.logback:logback-core:1.1.8",
+      "ch.qos.logback:logback-classic:1.1.8",
+      "ch.qos.logback:logback-access:1.1.8",
+      "org.logback-extensions:logback-ext-spring:0.1.4",
+      "org.logback-extensions:logback-ext-loggly:0.1.4"
+    ],
+
+    metrics : [
+      'io.dropwizard.metrics:metrics-core:3.1.2',
+      'io.dropwizard.metrics:metrics-json:3.1.2',
+      'io.dropwizard.metrics:metrics-jvm:3.1.2',
+      'io.dropwizard.metrics:metrics-healthchecks:3.1.2',
+      'io.dropwizard.metrics:metrics-graphite:3.1.2',
+      'io.dropwizard.metrics:metrics-annotation:3.1.2',
+      'io.dropwizard.metrics:metrics-servlets:3.1.2',
+      'io.dropwizard.metrics:metrics-ganglia:3.1.2',
+      'io.dropwizard.metrics:metrics-servlet:3.1.2',
+      'io.dropwizard.metrics:metrics-logback:3.1.2'
+    ],
+
+    zookeeper : [
+      "org.apache.zookeeper:zookeeper:3.4.9"
+    ],
+
+    curator : [
+      "org.apache.curator:curator-client:${versions.curator}",
+      "org.apache.curator:curator-framework:${versions.curator}",
+      "org.apache.curator:curator-recipes:${versions.curator}",
+      "org.apache.curator:curator-test:${versions.curator}",
+      "org.apache.curator:curator-x-rpc:${versions.curator}",
+      "org.apache.curator:curator-x-discovery:${versions.curator}",
+      "org.apache.curator:curator-x-discovery-server:${versions.curator}",
+      "org.apache.curator:curator-examples:${versions.curator}"
+    ],
+
+    fastjson:                  'com.alibaba:fastjson:1.2.23',
+
+    lombok:                    'org.projectlombok:lombok:1.16.12',
+
+    guava:                     'com.google.guava:guava:21.0',
+
+    spring_retry:              'org.springframework.retry:spring-retry:1.2.0.RELEASE',
+
+    xstream : [
+      'com.thoughtworks.xstream:xstream:1.4.9'
+    ],
+
+    jackson : [
+      "com.fasterxml.jackson.core:jackson-core:${versions.jackson}",
+      "com.fasterxml.jackson.core:jackson-databind:${versions.jackson}",
+      "com.fasterxml.jackson.core:jackson-annotations:${versions.jackson}"
+    ]
+  ]
+}

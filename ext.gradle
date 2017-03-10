@@ -1,0 +1,2 @@
+def rootDir=rootProject.projectDir.absolutePath.replaceAll("(?<=/zs-framework/).+", "")
+rootProject.projectDir=new File(rootDir)

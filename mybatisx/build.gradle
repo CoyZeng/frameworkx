@@ -1,0 +1,9 @@
+group = 'com.ducesoft'
+version = "${versions.mybatisx}"
+jar{
+    baseName = 'mybatisx'
+}
+
+dependencies {
+        compile libraries.mybatis
+}

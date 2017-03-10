@@ -1,0 +1,201 @@
+apply from: 'libraries.gradle'
+group = 'com.ducesoft'
+version = '1.0.0.RELEASE'
+
+buildscript {
+  ext {
+    springBootVersion = '1.5.1.RELEASE'
+  }
+  repositories {
+    //maven {url 'http://nexus.ducesoft.com/nexus/content/groups/public/'}
+    mavenCentral()
+      mavenLocal()
+      maven { url 'http://repo.spring.io/snapshot' }
+    maven { url 'http://repo.spring.io/milestone' }
+    maven { url 'https://repo.spring.io/libs-snapshot' }
+    maven { url 'http://nexus.ducesoft.com/nexus/content/groups/public/' }
+    jcenter()
+  }
+  dependencies {
+    classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+  }
+}
+
+
+allprojects {
+  buildDir = 'target'
+    apply plugin: 'groovy'
+    apply plugin: 'java'
+    apply plugin: 'eclipse-wtp'
+    apply plugin: 'eclipse'
+    apply plugin: 'idea'
+    apply plugin: 'maven'
+    apply plugin: 'org.springframework.boot'
+
+    sourceCompatibility = '1.8'
+    targetCompatibility = '1.8'
+
+    repositories {
+      maven {url 'http://nexus.ducesoft.com/nexus/content/groups/public/'}
+      mavenCentral()
+        mavenLocal()
+        maven { url "http://repo.spring.io/snapshot"   }
+      maven { url "http://repo.spring.io/milestone"   }
+      maven {url 'https://repo.spring.io/libs-snapshot'}
+      maven {url 'http://maven.aliyun.com/nexus/content/groups/public/'}
+      jcenter()
+    }
+
+  dependencies {
+  }
+
+  eclipse { classpath { downloadSources=true } }
+
+  configurations {
+    provided { // todo : need to make sure these are non-exported
+      description = 'Non-exported compile-time dependencies.' }
+    configurations {
+      all*.exclude group: 'commons-logging', module: 'commons-logging'
+        all*.exclude group: 'log4j'
+        all*.exclude group: 'org.slf4j', module: 'slf4j-log4j12'
+    }
+    tzresources{ description = 'share resources.' }
+  }
+  sourceSets.main.compileClasspath += configurations.provided
+    eclipse.classpath.plusConfigurations += configurations.provided
+    dependencies { 
+      //compile 'com.ducesoft:ds-common-*:${versions.ds_common}'
+    }
+  sourceSets.main.resources {
+    if (project.hasProperty('profile')) {
+      srcDir 'src/main/resources-' + project.profile
+        srcDir 'src/test/resources-' + project.profile
+    }
+  }
+
+  eclipseProject.doLast {
+    if (!new File("$projectDir/src").exists() && !new File("$projectDir/gen-java").exists()) {
+      ant.delete dir: '.settings'
+        ant.delete file: '.project'
+        ant.delete file: '.classpath'
+    }
+  }
+
+  task 'create-dirs'{
+    doLast{
+      sourceSets*.java.srcDirs*.each { it.mkdirs() }
+      sourceSets*.resources.srcDirs*.each { it.mkdirs() }
+    }
+  }
+
+  task listJars {
+    doLast{
+      configurations.compile.each { File file -> println file.name }
+    }
+  }
+
+  task zip(type: Zip) {
+    from ('script') { into('bin') }
+    from ('src/main/resources') { into('conf') }
+    if (project.hasProperty('profile'))
+      from ('src/main/resources-' + project.profile) { into('conf') }
+    into('lib') {
+      from ('lib')
+        from (jar.outputs.files)
+        from (configurations.compile)
+    }
+  }
+  zip.doFirst {
+    if (new File("$projectDir/script").exists()) {
+      classpath = new File("$projectDir/script/.classpath")
+        if (!classpath.exists()) classpath.createNewFile()
+          cp = 'CLASSPATH='
+            for(file in new File("$projectDir/lib").listFiles()) cp += '../lib/' + file.name + ';'
+              for(file in configurations.compile) cp += '../lib/' + file.name + ';'
+                for(file in jar.outputs.files) cp += '../lib/' + file.name + ';'
+                  classpath.text = cp.substring(0, cp.length() - 1)
+    }
+  }
+
+  tasks.withType(War) {
+    manifest {
+      attributes("Implementation-Title": project.name,
+          "Implementation-Version": project.version,
+          "Built-By": System.getProperty('user.name'),
+          "Built-JDK": System.getProperty('java.version'),
+          "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
+          )
+    }
+  }
+
+  tasks.withType(Jar) {
+    manifest {
+      attributes("Implementation-Title": project.name,
+          "Implementation-Version": project.version,
+          "Built-By": System.getProperty('user.name'),
+          "Built-JDK": System.getProperty('java.version'),
+          "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
+          )
+    }
+  }
+
+  task packageTests(type: Jar) {
+    baseName = "${project.archivesBaseName}-test"
+      from sourceSets.test.output
+  }
+
+  task sourcesJar(type: Jar, dependsOn:classes) {
+    classifier = 'sources'
+      from sourceSets.main.allSource
+  }
+
+  task javadocJar(type: Jar, dependsOn:javadoc) {
+    classifier = 'javadoc'
+      from javadoc.destinationDir
+  }
+
+  artifacts {
+    archives sourcesJar
+      archives javadocJar
+  }
+
+  // 编译groovy代码时采用 MacRoman
+  tasks.withType(GroovyCompile) { groovyOptions.encoding = 'MacRoman' }
+
+  // 编译JAVADOC文件时采用 UTF-8
+  tasks.withType(Javadoc) { options.encoding = 'UTF-8' }
+
+  // 编译JAVA文件时采用 UTF-8
+  tasks.withType(JavaCompile) { options.encoding = 'UTF-8' }
+
+  task pom {
+    doLast{
+      pom {
+        project {
+          inceptionYear '2016'
+            licenses {
+              license {
+                name 'The Apache Software License, Version 2.0'
+                  url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                  distribution 'repo'
+              }
+            }
+        }
+      }.writeTo("pom.xml")
+    }
+  }
+
+  uploadArchives {
+    repositories {
+      mavenDeployer {
+        repository(url: 'http://nexus.ducesoft.com/nexus/content/repositories/releases/') {
+          authentication(userName: mvnUser, password: mvnPasswd)
+      }
+      snapshotRepository(url: 'http://nexus.ducesoft.com/nexus/content/repositories/snapshots/') {
+        authentication(userName: mvnUser, password: mvnPasswd)
+      }
+      }
+    }
+  }
+  [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
+}

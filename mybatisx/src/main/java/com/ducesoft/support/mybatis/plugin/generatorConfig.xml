@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN" "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd" >
+<generatorConfiguration>
+	<!-- 驱动程序 -->
+	<classPathEntry location="/Users/ducesoft/.m2/repository/mysql/mysql-connector-java/5.1.40/mysql-connector-java-5.1.40.jar" />
+
+	<context id="context1" targetRuntime="MyBatis3" defaultModelType="flat">
+
+		<property name="targetPackage" value="mybatis.gen" />
+		<property name="targetProject" value="duce/ducesoft/ds" />
+		<plugin type="org.mybatis.generator.plugins.EqualsHashCodePlugin" />
+		<plugin type="com.ducesoft.common.core.mybatis.plugin.XmlFileOverwritePlugin"></plugin>
+		<plugin type="com.ducesoft.common.core.mybatis.plugin.DBCommentPlugin"></plugin>
+		<plugin type="com.ducesoft.common.core.mybatis.plugin.PagePlugin"></plugin>
+		<plugin type="com.ducesoft.common.core.mybatis.plugin.PessimisticLockPlugin"></plugin>
+		<plugin type="com.ducesoft.common.core.mybatis.plugin.MultiInsertPlugin"></plugin>
+		<plugin type="com.ducesoft.common.core.mybatis.plugin.NamingPlugin" />
+
+		<commentGenerator >
+			<!-- 是否取消注释 -->
+			<property name="suppressAllComments" value="true"/>
+    		<property name="suppressDate" value="true"/>
+		</commentGenerator>
+
+		<!-- 数据库链接 -->
+		<jdbcConnection driverClass="com.mysql.jdbc.Driver" connectionURL="jdbc:mysql://127.0.0.1/database?characterEncoding=utf8" userId="your" password="your" />
+			
+		<javaTypeResolver>
+	    	<property name="forceBigDecimals" value="false" />
+    	</javaTypeResolver>
+
+		<!-- java entity生成位置 -->
+		<javaModelGenerator targetPackage="com.ducesoft.common.core.mybatis.gen.po" targetProject="/duce/ducesoft/ds/ds-support/ds-support-core/src/main/java">
+			<property name="enableSubPackages" value="false" />
+			<property name="trimStrings" value="true" />
+		</javaModelGenerator>
+
+		<!-- mapper xml配置文件生成位置 -->
+		<sqlMapGenerator targetPackage="mapper.xml" targetProject="/duce/ducesoft/ds/ds-support/ds-support-core/src/main/resources">
+			<property name="enableSubPackages" value="false" />
+		</sqlMapGenerator>
+
+		<!-- mapper 接口生成位置 -->
+		<javaClientGenerator targetPackage="com.ducesoft.common.core.mybatis.gen.dao" targetProject="/duce/ducesoft/ds/ds-support/ds-support-core/src/main/java" type="XMLMAPPER">
+			<property name="enableSubPackages" value="false" />
+		</javaClientGenerator>
+
+		<!-- 表以及关系配置 -->
+		<!-- 
+		<generatedKey column="id" sqlStatement="JDBC" identity="true" /> 
+		<property name="useActualColumnNames" value="true"/>
+		-->
+		<table tableName="t_bms_third_map" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"><generatedKey column="id" sqlStatement="mysql" identity="true" /></table>
+	</context>
+</generatorConfiguration>
